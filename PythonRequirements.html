@@ -723,7 +723,9 @@ pre {
 }
 </style><title>PythonRequirements</title></head><body><article class="markdown-body"><h1>
 <a id="user-content-python-requirements" class="anchor" href="#python-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python Requirements</h1>
-<p>Python requirements are all the python libraries that are needed for a project to work. And yes, Django is something that needs to be included in the requirements file. All requirements are generally placed at the root of the project and is named 'requirements.txt' and pip allows us to quickly install all the required packages and libraries before starting development.</p>
+<p>Python requirements are all the python libraries that are needed for a project to work. And yes, Django is something that needs to be included in the requirements file. Every project should have a requirements.txt file to let other developers know what need to be install in order for the app to work/run.</p>
+<p>All requirements are generally placed at the root of the project and is named 'requirements.txt' and pip allows us to quickly install all the required packages and libraries before starting development.</p>
+<p>Make sure to install all requirements before starting development on a Django project, because the Django app may not work properly without all of its dependencies satisfied.</p>
 <h2>
 <a id="user-content-installing-python-requirements" class="anchor" href="#installing-python-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing Python requirements</h2>
 <p>In order to install the python requirements go to the root directory of the project:</p>
@@ -739,4 +741,31 @@ requests==1.2.0
 bcrypt==1.0.2
 ...
 </code></pre>
+<h2>
+<a id="user-content-getting-python-requirements" class="anchor" href="#getting-python-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Python requirements</h2>
+<h4>
+<a id="user-content-using-pip-and-virtualenv" class="anchor" href="#using-pip-and-virtualenv" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using pip (and virtualenv)</h4>
+<p>Technically this method doesn't use virtualenv, but without it your requirements.txt file will be very clunky.</p>
+<p><code>pip freeze</code> generates a list of installed python packages in reqruirements format.</p>
+<p>Requirements files are used to hold the result from pip freeze for the purpose of achieving repeatable installations. In this case, your requirement file contains a pinned version of everything that was installed when pip freeze was run.</p>
+<pre><code>$ cd path/to/project
+$ pip freeze &gt; requirements.txt
+</code></pre>
+<p>After running that, the root of your project will have a requirements.txt file that contains all the installed python packages. If you have virtualenv running then requirements.txt will only contain the packages install within that virtual environment. If not, then it will include all the global packages that you have ever installed (which may be a lot).</p>
+<h4>
+<a id="user-content-using-pipreqs" class="anchor" href="#using-pipreqs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using pipreqs</h4>
+<p>If you don't have virtualenv running, you may want to use pipreqs to auto generate all the packages that are needed by looking through all the python packages that you import in your code.</p>
+<p>First you need to install pipreqs:</p>
+<pre><code>$ pip install pipreqs
+</code></pre>
+<p>Go to the directory of your project and run the following command:</p>
+<pre><code>$ cd path/to/project
+$ pipreqs .
+</code></pre>
+<p>If you get an error related to UnicodeDecodeError run the following command instead:</p>
+<pre><code>$ pipreqs . --encoding=utf-8
+</code></pre>
+<h4>
+<a id="user-content-manually" class="anchor" href="#manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Manually</h4>
+<p>This is actually the simplest way to make sure that you have all the proper requirements in your requirements.txt file. Literally, you need to make sure to keep track of all the python packages that you installed using pip and record it in the requirements.txt file as you work. In the end, you will have a complete list of requirements!</p>
 </article></body></html>
