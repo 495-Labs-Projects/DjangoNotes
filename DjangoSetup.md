@@ -37,11 +37,7 @@ $ pip install Django
 To verify that you have Django installed open up your python prompt.
 
 ```
-$ python
-Python 3.x.x
-Type "help", "copyright", "credits" or "license" for more information.
->>> import django
->>> print(django.get_version())
+$ python -m django --version
 1.11.X
 ```
 
