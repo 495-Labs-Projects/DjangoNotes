@@ -725,4 +725,12 @@ pre {
 <a id="user-content-django-application-development-cheatsheet" class="anchor" href="#django-application-development-cheatsheet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Django Application Development Cheatsheet</h1>
 <h2>
 <a id="user-content-start-a-django-project" class="anchor" href="#start-a-django-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start a Django Project</h2>
+<p>There are three main ways to execute admin related tasks using django. These tasks include created starter code for a Django project/app, migrating your database, and even running your server. These three ways are all rather similar but all have its purposes, you will learn specific differences later on.</p>
+<pre><code>$ django-admin &lt;command&gt; [options]
+$ manage.py &lt;command&gt; [options]
+$ python -m django &lt;command&gt; [options]
+</code></pre>
+<p>Generally before, we start a Django project/app we will use django-admin to run commands to create a new Django project/app. Later on, once we have created our app, we tend to use manage.py as a way to run our commands like runserver. Read (here)[<a href="https://docs.djangoproject.com/en/1.11/ref/django-admin/">https://docs.djangoproject.com/en/1.11/ref/django-admin/</a>] for more information regarding the different commands available.</p>
+<h4>
+<a id="user-content-create-a-django-project" class="anchor" href="#create-a-django-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a Django Project</h4>
 </article></body></html>
