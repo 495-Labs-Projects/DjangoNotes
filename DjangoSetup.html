@@ -755,7 +755,47 @@ Type "help", "copyright", "credits" or "license" for more information.
 </code></pre>
 <h2>
 <a id="user-content-using-virtualenv-optional" class="anchor" href="#using-virtualenv-optional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using Virtualenv (Optional)</h2>
+<p>virtualenv is a tool to create isolated Python environments. virtualenv creates a folder which contains all the necessary executables to use the packages that a Python project would need. This helps with setting all necessary python requirements and dependencies for your Django app.</p>
+<p>When using a virtualenv, it won't be affected by the global python installation and vice versa. So anything you install within the virtualenv won't affect the global python packages.</p>
 <p>Install virtualenv using pip:</p>
 <pre><code>$ pip install virtualenv
 </code></pre>
+<p>Verify that virtualenv is installed properly:</p>
+<pre><code>$ virtualen --version
+</code></pre>
+<p>First, let's make a folder to hold all of our python virtual environments.</p>
+<pre><code>$ mkdir ~/virtualenvs
+</code></pre>
+<p>Then, let's create a new virtual environment and let's call it django-apps for now. This will create a new folder within your virtualenvs folder with an isolated python environment.</p>
+<pre><code>$ cd ~/virtualenvs
+$ virtualenv django-apps
+</code></pre>
+<p>Now once the virtual environment is installed, we need to activate it. This will be slightly different for windows and linux/mac users.</p>
+<ul>
+<li>Windows
+<ul>
+<li>There is a batch script written to activate each virtual environment located in the Scripts folder:
+<pre><code>$ source django-apps/Scripts/activate
+</code></pre>
+</li>
+</ul>
+</li>
+<li>Mac/Linux
+<ul>
+<li>There is bash script written to activate each virtual environment located in the bin folder:
+<pre><code>$ source django-apps/Scripts/activate
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>Once you have activated the django-apps virtual environment, you terminal prompt should display django-apps somewhere, like the following:</p>
+<pre><code>(django-apps) $
+</code></pre>
+<p>To make sure that you are running python in the isolated environment, type the following and see if the path is to the django-apps directory.</p>
+<pre><code>(django-apps) $ which python
+</code></pre>
+<p>Now that the virtual environment is activated within the terminal that you have open, it is running python within the isolated environment. You are able to create django projects the same way as you would without virtualenv. (Note: you may need to <code>pip install django</code> again)</p>
+<p>Any other terminal windows that you open will not have the virtual environment running and you will need to activate it for the specific terminal window. This means that everytime you close your terminal window and open a new one, make sure to activate it before working on your Django project. This will keep consistency with your projects and have all the python libraries that you installed previously.</p>
+<p>In order to deactivate or exit out of the virtual environment from the current window you will need to type in <code>deactivate</code>.</p>
 </article></body></html>
