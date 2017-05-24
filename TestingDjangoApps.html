@@ -726,6 +726,77 @@ pre {
 <p>For our unit tests we will be using a python library called <code>unittest</code> which is already built in and supported by Django.</p>
 <p>For our integration tests, we will be using Selenium to test out actual rendered views.</p>
 <h2>
+<a id="user-content-set-up-testing" class="anchor" href="#set-up-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up testing</h2>
+<h4>
+<a id="user-content-libraries-needed" class="anchor" href="#libraries-needed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Libraries needed</h4>
+<p>Before we begin we need a number of different libraries/packages to install (namely FactoryBoy and Converage).</p>
+<p>FactoryBoy is a fixtures replacement tool, it aims to replace static, hard to maintain fixtures with easy-to-use factories for complex object. Instead of building an exhaustive test setup with every possible combination of corner cases, factory_boy allows you to use objects customized for the current test, while only declaring the test-specific fields. To install factory_boy run the following command:</p>
+<pre><code>$ pip install factory_boy
+</code></pre>
+<p>You will also need a coverage tool, simply named Coverage.py. Coverage.py is a tool for measuring code coverage of Python programs and is especially useful for measuring code coverage of your unit tests. To install coverage, run the following command:</p>
+<pre><code>$ pip install coverage
+</code></pre>
+<h4>
+<a id="user-content-set-up-file-structure" class="anchor" href="#set-up-file-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up file structure</h4>
+<p>Each app will have its own testing suite. When an app is generated it comes with a <code>tests.py</code> file, we will first be removing this from the app folder. Then we will be creating a new folder called <code>tests/</code> and your helloworld app file structure should look like the following.</p>
+<pre><code>helloworld/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests/
+        __init__.py
+        factories.py
+        test_models.py
+        test_views.py
+        utilities.py
+    views.py
+</code></pre>
+<ul>
+<li>
+<code>__init__.py</code> helps django recognize the test folder and can be kept empty for now</li>
+<li>
+<code>factories.py</code> contains all the factory_boy factories for each model. We will be writing factories in here later.</li>
+<li>
+<code>test_models.py</code> contains all the unit tests for each of our models</li>
+<li>
+<code>test_views.py</code> contains all the unit tests for our views</li>
+<li>
+<code>utilities.py</code> contains all the helper/utility functions for our tests. Includes model sets to populate the test db for our tests.</li>
+</ul>
+<h2>
+<a id="user-content-running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running tests</h2>
+<h4>
+<a id="user-content-testing-commands" class="anchor" href="#testing-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing commands</h4>
+<p>When running tests, Django does a lot of things automatically. Django finds every file that is name <code>test*.py</code> (i.e. test_models.py, test.py, etc.) and runs those tests.</p>
+<p>To just run all the tests:</p>
+<pre><code>$ manage.py test
+</code></pre>
+<p>To run just the model tests:</p>
+<pre><code>$ manage.py test helloworld.tests.test_models
+</code></pre>
+<p>To run a specific test:</p>
+<pre><code>$ manage.py test helloworld.tests.test_models.&lt;TestClass&gt;.&lt;test_function&gt;
+
+# So if your test class is called UserTest and your specific function test is called test_user_validations
+$ manage.py test helloworld.tests.test_models.UserTest.test_user_validations
+
+</code></pre>
+<h4>
+<a id="user-content-testing-with-coverage" class="anchor" href="#testing-with-coverage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing with coverage</h4>
+<p>We can also run all of our tests using coverage, that way we can see the coverage for our tests and run our tests at the same time. In order to do so, just tag <code>coverage run</code> in front of all your testing commands:</p>
+<pre><code>$ coverage run manage.py test
+</code></pre>
+<p>After you run your tests with coverage, you can generate a report:</p>
+<pre><code>$ coverage report
+</code></pre>
+<p>And if you want it in html format:</p>
+<pre><code>$ coverage html
+</code></pre>
+<p>The html coverage report will be located in your root project folder under <code>htmlcov/index.html</code> and we recommend that you use your <code>.gitignore</code> to ignore this whole folder.</p>
+<h2>
 <a id="user-content-unit-test-for-models" class="anchor" href="#unit-test-for-models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Unit test for models</h2>
 <h2>
 <a id="user-content-unit-tests-for-views" class="anchor" href="#unit-tests-for-views" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Unit tests for views</h2>
