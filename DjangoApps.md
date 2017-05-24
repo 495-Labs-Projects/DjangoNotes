@@ -148,3 +148,6 @@ $ manage.py migrate
 `migrate` actually applies those changes to the database.
 
 
+## Accessing Django Shell
+
+
