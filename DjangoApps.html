@@ -804,13 +804,16 @@ $ python -m django &lt;command&gt; [options]
 </code></pre>
 <h4>
 <a id="user-content-creating-models" class="anchor" href="#creating-models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating models</h4>
-<p>Now we will create a simple model and run through the migration progress for our <code>helloworld</code> app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each.</p>
+<p>Now we will create a simple model and run through the migration progress for our <code>helloworld</code> app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each. We should always include a str representation of each model because it is what will be displayed everywhere to represent each instance of the model; in this case we will just be using the full user's name.</p>
 <p>In our <code>helloworld/models.py</code> files put the following:</p>
 <pre><code>from django.db import models
 
 class User(models.Model):
   first_name = models.ChartField(max_length=200)
   last_name = models.CharField(max_length=200)
+
+  def __str__(self):
+        return self.first_name + " " + self.last_name
 
 </code></pre>
 <h4>
@@ -835,4 +838,108 @@ class User(models.Model):
 </code></pre>
 <p><code>makemigrations</code> is used to create migrations for the changes to the models that you made.</p>
 <p><code>migrate</code> actually applies those changes to the database.</p>
+<h2>
+<a id="user-content-accessing-django-shell" class="anchor" href="#accessing-django-shell" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accessing Django Shell</h2>
+<p>Django also provides an interactive shell for you to work with and interact with the project and its database. Here we will go through how to interact with the database through our models.</p>
+<h4>
+<a id="user-content-accessing-the-shell" class="anchor" href="#accessing-the-shell" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accessing the shell</h4>
+<p>In order to access the shell, enter the following command:</p>
+<pre><code>$ manage.py shell
+</code></pre>
+<p>Once you are in the shell import the actual models that you have created, in this case the User model:</p>
+<pre><code>&gt;&gt;&gt; from helloworld.models import User
+</code></pre>
+<h4>
+<a id="user-content-interacting-with-the-models" class="anchor" href="#interacting-with-the-models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Interacting with the models</h4>
+<p>For the purpose of this tutorial lets say we have two more models Town and Attraction, where it is a one to many relationship between Town and Attraction. The following would be how the model would look like:</p>
+<pre><code>class Town(models.Model):
+    name = models.CharField(max_length=200)
+
+class Attraction(models.Model):
+    town = models.ForeignKey(Town, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    visitors = models.IntegerField(default=0)
+
+</code></pre>
+<p>From within the shell, here are a bunch of actions you can take with the models:</p>
+<ul>
+<li>Get all instances of the model
+<pre><code># all of the return types are QuerySet, which you can iterate through like a list
+&gt;&gt;&gt; Town.objects.all()
+&gt;&gt;&gt; User.objects.all()
+&gt;&gt;&gt;
+&gt;&gt;&gt; Attraction.objects.count()
+</code></pre>
+</li>
+<li>Save an instance of each model
+<pre><code>&gt;&gt;&gt; u = User(first_name="Bob", last_name="Smith")
+&gt;&gt;&gt; u.save()
+&gt;&gt;&gt; User.objects.all()
+# Notice how the users will be displayed using the str representation  
+
+...
+
+# create does the save automatically
+&gt;&gt;&gt; t = Town.objects.create(name="Pittsburgh")
+
+...
+
+&gt;&gt;&gt; t.attraction_set.all() # this gets all the attractions related to t
+&gt;&gt;&gt; t.attraction_set.create(name="CMU", visitors=100)
+&gt;&gt;&gt; t.attraction_set.create(name="Cathedral of Learning", visitors=999)
+
+...
+
+# display all the changes that we have made
+&gt;&gt;&gt; User.objects.all()
+&gt;&gt;&gt; Town.objects.all()
+&gt;&gt;&gt; Attraction.objects.all()
+&gt;&gt;&gt; t.attraction_set.all()
+</code></pre>
+</li>
+<li>Get object relationships
+<pre><code>&gt;&gt;&gt; t = Town.objects.all()[0] # get the first town instance
+&gt;&gt;&gt; a = Attraction.objects.all()[0]
+&gt;&gt;&gt;
+&gt;&gt;&gt; t.attraction_set.all() # get all attractions related to the town t
+&gt;&gt;&gt;
+&gt;&gt;&gt; a.town # gets the town that is related to the attraction a
+</code></pre>
+</li>
+<li>Get certain objects
+<ul>
+<li>Get only one object (returns one instance of the model)
+<pre><code># these two mean the same
+&gt;&gt;&gt; Question.objects.get(id=2)
+&gt;&gt;&gt; Question.objects.get(fk=2)
+</code></pre>
+</li>
+<li>Filter multiple object (returns a QuerySet of multiple instances)
+<pre><code># gets all the users where the first_name == "Bob"
+&gt;&gt;&gt; User.objects.filter(first_name="Bob")
+&gt;&gt;&gt;
+&gt;&gt;&gt; t = Town.objects.get(id=1)
+# the double underscore __ is used to denote an instance method
+# filters out all attractions related to Town t where name.startswidth == 'C'
+&gt;&gt;&gt; t.attraction_set.filter(name__startswith='C')
+&gt;&gt;&gt;
+# the double underscore is also used to go another level deep in relationships
+# gets all attractions where its town.name.startswidth == 'Pitt'
+&gt;&gt;&gt; Attraction.objects.filter(town__name__startswith='Pitt')
+</code></pre>
+</li>
+</ul>
+</li>
+<li>Modify an object
+<pre><code>&gt;&gt;&gt; u = User.objects.all()[0]
+&gt;&gt;&gt; u.first_name = "John"
+&gt;&gt;&gt; u.save()
+</code></pre>
+</li>
+<li>Delete an object
+<pre><code>&gt;&gt;&gt; t = Town.objects.get(pk=1)
+&gt;&gt;&gt; t.delete()
+</code></pre>
+</li>
+</ul>
 </article></body></html>

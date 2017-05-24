@@ -100,7 +100,7 @@ $ manage.py migrate
 
 #### Creating models
 
-Now we will create a simple model and run through the migration progress for our `helloworld` app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each. 
+Now we will create a simple model and run through the migration progress for our `helloworld` app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each. We should always include a str representation of each model because it is what will be displayed everywhere to represent each instance of the model; in this case we will just be using the full user's name.
 
 In our `helloworld/models.py` files put the following:
 
@@ -110,6 +110,9 @@ from django.db import models
 class User(models.Model):
   first_name = models.ChartField(max_length=200)
   last_name = models.CharField(max_length=200)
+
+  def __str__(self):
+        return self.first_name + " " + self.last_name
 
 ```
 
@@ -150,4 +153,110 @@ $ manage.py migrate
 
 ## Accessing Django Shell
 
+Django also provides an interactive shell for you to work with and interact with the project and its database. Here we will go through how to interact with the database through our models.
 
+#### Accessing the shell
+
+In order to access the shell, enter the following command:
+
+```
+$ manage.py shell
+```
+
+Once you are in the shell import the actual models that you have created, in this case the User model:
+
+```
+>>> from helloworld.models import User
+```
+
+#### Interacting with the models
+
+For the purpose of this tutorial lets say we have two more models Town and Attraction, where it is a one to many relationship between Town and Attraction. The following would be how the model would look like:
+
+```
+class Town(models.Model):
+    name = models.CharField(max_length=200)
+
+class Attraction(models.Model):
+    town = models.ForeignKey(Town, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    visitors = models.IntegerField(default=0)
+
+```
+
+From within the shell, here are a bunch of actions you can take with the models:
+* Get all instances of the model
+  ```
+  # all of the return types are QuerySet, which you can iterate through like a list
+  >>> Town.objects.all()
+  >>> User.objects.all()
+  >>>
+  >>> Attraction.objects.count()
+  ```
+* Save an instance of each model
+  ```
+  >>> u = User(first_name="Bob", last_name="Smith")
+  >>> u.save()
+  >>> User.objects.all()
+  # Notice how the users will be displayed using the str representation  
+
+  ...
+
+  # create does the save automatically
+  >>> t = Town.objects.create(name="Pittsburgh")
+  
+  ...
+
+  >>> t.attraction_set.all() # this gets all the attractions related to t
+  >>> t.attraction_set.create(name="CMU", visitors=100)
+  >>> t.attraction_set.create(name="Cathedral of Learning", visitors=999)
+
+  ...
+  
+  # display all the changes that we have made
+  >>> User.objects.all()
+  >>> Town.objects.all()
+  >>> Attraction.objects.all()
+  >>> t.attraction_set.all()
+  ```
+* Get object relationships
+  ```
+  >>> t = Town.objects.all()[0] # get the first town instance
+  >>> a = Attraction.objects.all()[0]
+  >>>
+  >>> t.attraction_set.all() # get all attractions related to the town t
+  >>>
+  >>> a.town # gets the town that is related to the attraction a
+  ```
+* Get certain objects
+  * Get only one object (returns one instance of the model)
+    ```
+    # these two mean the same
+    >>> Question.objects.get(id=2)
+    >>> Question.objects.get(fk=2)
+    ```
+  * Filter multiple object (returns a QuerySet of multiple instances)
+    ```
+    # gets all the users where the first_name == "Bob"
+    >>> User.objects.filter(first_name="Bob")
+    >>>
+    >>> t = Town.objects.get(id=1)
+    # the double underscore __ is used to denote an instance method
+    # filters out all attractions related to Town t where name.startswidth == 'C'
+    >>> t.attraction_set.filter(name__startswith='C')
+    >>>
+    # the double underscore is also used to go another level deep in relationships
+    # gets all attractions where its town.name.startswidth == 'Pitt'
+    >>> Attraction.objects.filter(town__name__startswith='Pitt')
+    ```
+* Modify an object
+  ```
+  >>> u = User.objects.all()[0]
+  >>> u.first_name = "John"
+  >>> u.save()
+  ```
+* Delete an object
+  ```
+  >>> t = Town.objects.get(pk=1)
+  >>> t.delete()
+  ```
