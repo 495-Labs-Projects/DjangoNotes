@@ -57,7 +57,7 @@ $ pip install virtualenv
 Verify that virtualenv is installed properly:
 
 ```
-$ virtualen --version
+$ virtualenv --version
 ```
 
 First, let's make a folder to hold all of our python virtual environments. 
