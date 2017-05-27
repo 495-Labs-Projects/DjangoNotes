@@ -749,6 +749,7 @@ pre {
     tests/
         __init__.py
         factories.py
+        test_functional.py
         test_models.py
         test_views.py
         utilities.py
@@ -759,6 +760,8 @@ pre {
 <code>__init__.py</code> helps django recognize the test folder and can be kept empty for now</li>
 <li>
 <code>factories.py</code> contains all the factory_boy factories for each model. We will be writing factories in here later.</li>
+<li>
+<code>test_functional.py</code> contains all the function/integration tests which use selenium</li>
 <li>
 <code>test_models.py</code> contains all the unit tests for each of our models</li>
 <li>
@@ -802,4 +805,80 @@ $ manage.py test helloworld.tests.test_models.UserTest.test_user_validations
 <a id="user-content-unit-tests-for-views" class="anchor" href="#unit-tests-for-views" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Unit tests for views</h2>
 <h2>
 <a id="user-content-functionalintegration-testing" class="anchor" href="#functionalintegration-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Functional/Integration Testing</h2>
+<p>For functional testing we will be using selenium as our main library. This allows us to mimic browser interactions with the web application. Selenium works best with Firefox, so you should install Firefox before continuing. (Note: Chrome also works, but haven't been fully tested)</p>
+<h4>
+<a id="user-content-install-selenium" class="anchor" href="#install-selenium" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install selenium</h4>
+<p>To install selenium:</p>
+<pre><code>$ pip instal selenium
+</code></pre>
+<h4>
+<a id="user-content-install-a-web-driver" class="anchor" href="#install-a-web-driver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install a web driver</h4>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Firefox</td>
+<td><a href="https://github.com/mozilla/geckodriver/releases">https://github.com/mozilla/geckodriver/releases</a></td>
+</tr>
+<tr>
+<td>Chrome</td>
+<td><a href="https://sites.google.com/a/chromium.org/chromedriver/downloads">https://sites.google.com/a/chromium.org/chromedriver/downloads</a></td>
+</tr>
+</tbody>
+</table>
+<p>In order for selenium to work you will need to download your version of webdriver first by going to the above link. After you download one of the web drivers, you need to place it in your app's <code>tests/drivers</code> folder. So in the case of Firefox's geckodriver.exe (for Windows) place it in the following folder in the helloworld app:</p>
+<pre><code>helloworld/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests/
+        __init__.py
+        drivers/
+            **geckodriver.exe**
+        factories.py
+        test_functional.py
+        test_models.py
+        test_views.py
+        utilities.py
+    views.py
+</code></pre>
+<p>(Note: An alternative method is to actually put the web driver, in this case geckodriver.exe, in the system's PATH variable instead of the drivers folder. For Linux/Mac users, simply putting it in your <code>/usr/bin</code> or <code>/usr/local/bin</code> directory is enough. Google how to add something to your PATH for Windows, it is more complicated.)</p>
+<h4>
+<a id="user-content-getting-started-with-selenium" class="anchor" href="#getting-started-with-selenium" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started with Selenium</h4>
+<p>In your <code>test_functional.py</code> file, you will write all of your functional tests. First we need to import the basics:</p>
+<pre><code>from selenium import webdriver
+</code></pre>
+<p>Then we actually need to instantiate the driver object. Usually this is done in the <code>setUp</code> function of each test case.</p>
+<pre><code>def setUp(self):
+    self.driver = webdriver.Firefox(executable_path="helloworld/tests/drivers/geckodriver.exe")
+</code></pre>
+<p>What this does is goes to the relative path (relative to the root of the Django project) and selects that driver to use. Now any tests that you write will use the setUp function and create its own selenium driver first.</p>
+<p>(Note: If you decided to add the web driver to your system PATH instead of putting it in the drivers folder, you won't need to include the executable_path. Simple, <code>self.driver = webdriver.Firefox()</code> would work.)</p>
+<h4>
+<a id="user-content-testing-example" class="anchor" href="#testing-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing example</h4>
+<p>Here is a simple example of how to write a functional test using Selenium and unittest's framework. All this test does is start up the selenium driver, go to the home_page url and then check if the title of the page contains the words "HelloWorld". We need to use the <code>self.live_server_url</code> in order to get the base url that selenium uses.</p>
+<p><code>StaticLiveServerTestCase</code> is a specific test case that allows django to run all its static files when testing with Selenium.</p>
+<pre><code>from selenium import webdriver
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+class FunctionalTest(StaticLiveServerTestCase):
+    def setUp(self):
+        self.driver = webdriver.Firefox(executable_path="books/tests/drivers/geckodriver.exe")
+
+    def tearDown(self):
+        self.driver.quit()
+
+    def test_home_page(self):
+        url = self.live_server_url + reverse("home_page")
+        self.driver.get(url)
+        self.assertIn("HelloWorld", self.driver.title)
+</code></pre>
 </article></body></html>
