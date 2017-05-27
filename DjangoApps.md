@@ -73,7 +73,7 @@ helloworld/
 
 #### Starting up the server
 
-Now we will be able to run our server with in our Django Project. This is as simple as running the following command:
+Now we will be able to run our server with in our Django Project. This is as simple as running the following command (default port is 8000, so the url is http://localhost:8000/):
 
 ```
 $ manage.py runserver
