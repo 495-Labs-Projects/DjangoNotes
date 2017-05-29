@@ -724,16 +724,16 @@ pre {
 </style><title>TestingDjangoApps</title></head><body><article class="markdown-body"><h1>
 <a id="user-content-testing-django-apps" class="anchor" href="#testing-django-apps" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing Django Apps</h1>
 <p>For our unit tests we will be using a python library called <code>unittest</code> which is already built in and supported by Django.</p>
-<p>For our integration tests, we will be using Selenium to test out actual rendered views.</p>
+<p>For our integration tests, we will be using <a href="https://django-selenium.readthedocs.io/en/latest/" target="_blank">Selenium</a> to test out actual rendered views.</p>
 <h2>
 <a id="user-content-set-up-testing" class="anchor" href="#set-up-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up testing</h2>
 <h4>
 <a id="user-content-libraries-needed" class="anchor" href="#libraries-needed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Libraries needed</h4>
 <p>Before we begin we need a number of different libraries/packages to install (namely FactoryBoy and Converage).</p>
-<p>FactoryBoy is a fixtures replacement tool, it aims to replace static, hard to maintain fixtures with easy-to-use factories for complex object. Instead of building an exhaustive test setup with every possible combination of corner cases, factory_boy allows you to use objects customized for the current test, while only declaring the test-specific fields. To install factory_boy run the following command:</p>
+<p><a href="https://factoryboy.readthedocs.io/en/latest/" target="_blank">FactoryBoy</a> is a fixtures replacement tool, it aims to replace static, hard to maintain fixtures with easy-to-use factories for complex object. A factory is essentially a model object we will use to test, and FactoryBoy helps to expedite the testing process by making these model objects quick to create. Instead of building an exhaustive test setup with every possible combination of corner cases, FactoryBoy allows you to use objects customized for the current test, while only declaring the test-specific fields. To install FactoryBoy run the following command:</p>
 <pre><code>$ pip install factory_boy
 </code></pre>
-<p>You will also need a coverage tool, simply named Coverage.py. Coverage.py is a tool for measuring code coverage of Python programs and is especially useful for measuring code coverage of your unit tests. To install coverage, run the following command:</p>
+<p>You will also need a coverage tool, simply named <code>Coverage.py</code>. Coverage.py is a tool for measuring code coverage of Python programs and is especially useful for measuring code coverage of your unit tests (essentially, how many lines of code do our tests verify run as expected). To install coverage, run the following command:</p>
 <pre><code>$ pip install coverage
 </code></pre>
 <h4>
