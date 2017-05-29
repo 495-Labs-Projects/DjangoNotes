@@ -732,6 +732,7 @@ pre {
 <pre><code>$ python --version
 Python 3.x.x
 </code></pre>
+<strong>IMPORTANT: on many Macs, the default Python version is <code>Python 2.7.X</code>, which is not compatable with modules for Django written in Python 3.X</strong>. If running <code>python --version</code> yields <code>Python 2.7.X</code>, try running <code>python3 --version</code>. If this works, continue with the rest of the tutorial using these <code>python3</code> and <code>pip3</code> commands from the terminal instead of <code>python</code> and <code>pip</code>.
 <h4>
 <a id="user-content-setup-database" class="anchor" href="#setup-database" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup Database</h4>
 <p>Next you will need to setup your database. Since we will be using <a href="https://www.sqlite.org/">SQLite</a> we don't have anything to set up for now.</p>
@@ -757,7 +758,7 @@ pip 9.x.x
 <pre><code>$ pip install virtualenv
 </code></pre>
 <p>Verify that virtualenv is installed properly:</p>
-<pre><code>$ virtualen --version
+<pre><code>$ virtualenv --version
 </code></pre>
 <p>First, let's make a folder to hold all of our python virtual environments.</p>
 <pre><code>$ mkdir ~/virtualenvs
