@@ -725,7 +725,13 @@ pre {
 <a id="user-content-django-application-development-cheatsheet" class="anchor" href="#django-application-development-cheatsheet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Django Application Development Cheatsheet</h1>
 <h2>
 <a id="user-content-start-a-django-project" class="anchor" href="#start-a-django-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start a Django Project</h2>
-<p>There are three main ways to execute admin related tasks using django. These tasks include created starter code for a Django project/app, migrating your database, and even running your server. These three ways are all rather similar but all have its purposes, you will learn specific differences later on.</p>
+<p>There are three main ways to execute admin related tasks to a project using Django. These tasks include: 
+<ol>
+  <li>Creating some starter code for a Django application</li>
+  <li>Migrating the database (changing the database schema)</li>
+  <li>Running the project</li>
+</ol>
+ These three ways are all rather similar but all have its purposes, you will learn specific differences later on.</p>
 <pre><code>$ django-admin &lt;command&gt; [options]
 $ manage.py &lt;command&gt; [options]
 $ python -m django &lt;command&gt; [options]
@@ -745,15 +751,15 @@ $ python -m django &lt;command&gt; [options]
         urls.py
         wsgi.py
 </code></pre>
-<p>Don't worry too much about understanding all of these file yet, we will go into more details later on, but the following is a quick description of each file/directory:</p>
+<p>Don't worry too much about understanding all of these files yet, we will go into more details later on, but the following is a quick description of each file/directory:</p>
 <ul>
-<li>The outer mysite/ root directory is just a container for your project. Its name doesn’t matter to Django; you can rename it to anything you like.</li>
-<li>manage.py: A command-line utility that lets you interact with this Django project in various ways.</li>
-<li>The inner mysite/ directory is the actual Python package for your project. Its name is the Python package name you'll need to use to import anything inside it (e.g. mysite.urls).</li>
-<li>mysite/<strong>init</strong>.py: An empty file that tells Python that this directory should be considered a Python package.</li>
-<li>mysite/settings.py: Settings/configuration for this Django project. Django settings will tell you all about how settings work.</li>
-<li>mysite/urls.py: The URL declarations for this Django project; a "table of contents" of your Django-powered site.</li>
-<li>mysite/wsgi.py: An entry-point for WSGI-compatible web servers to serve your project.</li>
+<li>The outer <code><strong>mysite/</strong></code> root directory is just a container for your project. Its name doesn’t matter to Django; you can rename it to anything you like.</li>
+<li><code><strong>manage</strong>.py</code>: A command-line utility that lets you interact with this Django project in various ways.</li>
+<li>The inner <code>mysite/</code> directory is the actual Python package for your project. Its name is the Python package name you'll need to use to import anything inside it (e.g. <code>mysite.urls</code>).</li>
+<li><code>mysite/<strong>init</strong>.py</code>: An empty file that tells Python that this directory should be considered a Python package.</li>
+<li><code>mysite/<strong>settings</strong>.py</code>: Settings/configuration for this Django project. Django settings will tell you all about how settings work.</li>
+<li><code>mysite/<strong>urls</strong>.py</code>: The URL declarations for this Django project; a "table of contents" of your Django-powered site.</li>
+<li><code>mysite/<strong>wsgi</strong>.py</code>: An entry-point for WSGI-compatible web servers to serve your project.</li>
 </ul>
 <h4>
 <a id="user-content-create-a-django-app" class="anchor" href="#create-a-django-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a Django App</h4>
@@ -768,7 +774,7 @@ $ python -m django &lt;command&gt; [options]
 <li>App
 <ul>
 <li>An application tries to provide a single, relatively self-contained set of related functions. An application is allowed to define a set of models and to define and register custom template tags and filters.</li>
-<li>ex) user login app, user notifications app, newletter app, etc.</li>
+<li>ex) user login app, user notifications app, newsletter app, etc.</li>
 </ul>
 </li>
 </ul>
@@ -791,12 +797,12 @@ $ python -m django &lt;command&gt; [options]
 <p>Now we will be able to run our server with in our Django Project. This is as simple as running the following command:</p>
 <pre><code>$ manage.py runserver
 </code></pre>
-<p>or in order to specify a port/IP address (0.0.0.0:8080):</p>
+<p>or in order to specify a IP and port address (IP:Port i.e. 0.0.0.0:8080):</p>
 <pre><code>$ manage.py runserver 0:8080
 </code></pre>
 <h2>
 <a id="user-content-create-models-and-database" class="anchor" href="#create-models-and-database" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create models and database</h2>
-<p>Since we are using SQLite, we won't really need to do too much setup in order to get the database running.</p>
+<p>Since we are using SQLite, we won't really need to do too much setup in order to get the database running. You can read more about SQLite <a href="https://www.sqlite.org/" target="_blank">here</a>. This should build off of SQL database knowledge you may have already learned.</p>
 <h4>
 <a id="user-content-migrating-the-database" class="anchor" href="#migrating-the-database" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Migrating the database</h4>
 <p>Under <code>mysite/settings.py</code> there are <code>INSTALLED_APPS</code> by default (you can also add your own apps here too). There installed apps all have its own models and needs access to certain database tables. In order to set up those database tables, we need to migrate our database by running the following command (Note: the migrate command only runs migrations for apps included in the <code>INSTALLED_APPS</code>):</p>
@@ -804,18 +810,19 @@ $ python -m django &lt;command&gt; [options]
 </code></pre>
 <h4>
 <a id="user-content-creating-models" class="anchor" href="#creating-models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating models</h4>
-<p>Now we will create a simple model and run through the migration progress for our <code>helloworld</code> app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each. We should always include a str representation of each model because it is what will be displayed everywhere to represent each instance of the model; in this case we will just be using the full user's name.</p>
+<p>Now we will create a simple model and run through the migration progress for our <code>helloworld</code> app. Let's create a User model with two fields (first_name, last_name). We will not go into details of how to create more complicated models, but in this case we created a User model with two character string fields of max length 200 each. We should always include a string representation (defined with the <code>__str__</code> Python class method below) of each model because it is what will be displayed everywhere to represent each instance of the model; in this case we will just be using the full user's name.</p>
 <p>In our <code>helloworld/models.py</code> files put the following:</p>
 <pre><code>from django.db import models
 
 class User(models.Model):
-  first_name = models.ChartField(max_length=200)
+  first_name = models.CharField(max_length=200)
   last_name = models.CharField(max_length=200)
 
   def __str__(self):
         return self.first_name + " " + self.last_name
 
 </code></pre>
+<p>Note that the <code>models.CharField</code> functions actually define the type of the field to be a <code>Char</code> of length at most 200. You can read more about this, and other Django model outlining functions <a href="https://docs.djangoproject.com/en/1.11/ref/forms/fields/#charfield" target="_blank">here</a>. We will work more with other types as we continue</p>
 <h4>
 <a id="user-content-migrate-models-and-activate-app" class="anchor" href="#migrate-models-and-activate-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Migrate models and activate app</h4>
 <p>First we need to include our <code>helloworld</code> app into our <code>INSTALLED_APPS</code> hash. Go to your <code>mysite/settings.py</code> file and add the following <code>'helloworld.apps.HelloworldConfig',</code> to the <code>INSTALLED_APPS</code>:</p>
