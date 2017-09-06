@@ -41,6 +41,43 @@ $ python -m django --version
 1.11.X
 ```
 
+### Running MongoDB
+
+If you wish to run MongoDB as the backend databse of choice for your Django application, there are two installations you should be sure to have: [MongoDB (3.4+)](https://docs.mongodb.com/manual/administration/install-community/) and [mongoengine (0.13.0)](http://mongoengine.org/).
+
+#### Installing MongoDB
+
+Please refer to [this guide](https://docs.mongodb.com/manual/administration/install-community/) for platform-specific instructions on installing MongoDB to your system.
+
+#### Verifying MongoDB Installation
+
+Try the following:
+
+1. Open two terminal/command line shells or tabs.
+2. On one terminal shell, run `mongod`. You should get a detailed log with no prompts to continue entering input.
+3. On the other terminal shell, run `mongo`. You should get a prompt to run commands.
+4. In the `mongo` shell, try running the mongo command `show dbs`. If you see several databases listed, everything is good to go!
+
+#### Installing and Configuring mongoengine
+
+[mongoengine](http://mongoengine.org/) is a connector allowing for the use of a MongoDB database within a Django or Flask Python application (Django is supported, contrary to a graphic on their website).
+
+There is extensive documentation on mongoengine, which you can find [here](http://mongoengine.readthedocs.io/en/latest/tutorial.html). **This will definitely come in handy during the semester**.
+
+mongoengine can be installed with a simple pip install. Open terminal/command prompt and run the following command:
+
+`pip install mongoengine`
+
+#### Verifying mongoengine Installation
+
+Once mongoengine has finished installing from the command line, then perform the following:
+
+1. Open Terminal or the command line.
+2. run `python` to open the Python REPL.
+3. run `import mongoengine` from inside of the Python REPL.
+4. If the next line is blank (or simply `>>>`), then mongoengine is installed!
+5. Again, check the version of Python to be 3.4.X (shown on the first line of the REPL).
+
 
 ## Using Virtualenv (Optional)
 
