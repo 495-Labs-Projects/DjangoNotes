@@ -732,7 +732,6 @@ pre {
 <pre><code>$ python --version
 Python 3.x.x
 </code></pre>
-<strong>IMPORTANT: on many Macs, the default Python version is <code>Python 2.7.X</code>, which is not compatable with modules for Django written in Python 3.X</strong>. If running <code>python --version</code> yields <code>Python 2.7.X</code>, try running <code>python3 --version</code>. If this works, continue with the rest of the tutorial using these <code>python3</code> and <code>pip3</code> commands from the terminal instead of <code>python</code> and <code>pip</code>.
 <h4>
 <a id="user-content-setup-database" class="anchor" href="#setup-database" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup Database</h4>
 <p>Next you will need to setup your database. Since we will be using <a href="https://www.sqlite.org/">SQLite</a> we don't have anything to set up for now.</p>
@@ -750,6 +749,37 @@ pip 9.x.x
 <pre><code>$ python -m django --version
 1.11.X
 </code></pre>
+<h3>
+<a id="user-content-running-mongodb" class="anchor" href="#running-mongodb" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running MongoDB</h3>
+<p>If you wish to run MongoDB as the backend databse of choice for your Django application, there are two installations you should be sure to have: <a href="https://docs.mongodb.com/manual/administration/install-community/">MongoDB (3.4+)</a> and <a href="http://mongoengine.org/">mongoengine (0.13.0)</a>.</p>
+<h4>
+<a id="user-content-installing-mongodb" class="anchor" href="#installing-mongodb" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing MongoDB</h4>
+<p>Please refer to <a href="https://docs.mongodb.com/manual/administration/install-community/">this guide</a> for platform-specific instructions on installing MongoDB to your system.</p>
+<h4>
+<a id="user-content-verifying-mongodb-installation" class="anchor" href="#verifying-mongodb-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Verifying MongoDB Installation</h4>
+<p>Try the following:</p>
+<ol>
+<li>Open two terminal/command line shells or tabs.</li>
+<li>On one terminal shell, run <code>mongod</code>. You should get a detailed log with no prompts to continue entering input.</li>
+<li>On the other terminal shell, run <code>mongo</code>. You should get a prompt to run commands.</li>
+<li>In the <code>mongo</code> shell, try running the mongo command <code>show dbs</code>. If you see several databases listed, everything is good to go!</li>
+</ol>
+<h4>
+<a id="user-content-installing-and-configuring-mongoengine" class="anchor" href="#installing-and-configuring-mongoengine" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing and Configuring mongoengine</h4>
+<p><a href="http://mongoengine.org/">mongoengine</a> is a connector allowing for the use of a MongoDB database within a Django or Flask Python application (Django is supported, contrary to a graphic on their website).</p>
+<p>There is extensive documentation on mongoengine, which you can find <a href="http://mongoengine.readthedocs.io/en/latest/tutorial.html">here</a>. <strong>This will definitely come in handy during the semester</strong>.</p>
+<p>mongoengine can be installed with a simple pip install. Open terminal/command prompt and run the following command:</p>
+<p><code>pip install mongoengine</code></p>
+<h4>
+<a id="user-content-verifying-mongoengine-installation" class="anchor" href="#verifying-mongoengine-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Verifying mongoengine Installation</h4>
+<p>Once mongoengine has finished installing from the command line, then perform the following:</p>
+<ol>
+<li>Open Terminal or the command line.</li>
+<li>run <code>python</code> to open the Python REPL.</li>
+<li>run <code>import mongoengine</code> from inside of the Python REPL.</li>
+<li>If the next line is blank (or simply <code>&gt;&gt;&gt;</code>), then mongoengine is installed!</li>
+<li>Again, check the version of Python to be 3.4.X (shown on the first line of the REPL).</li>
+</ol>
 <h2>
 <a id="user-content-using-virtualenv-optional" class="anchor" href="#using-virtualenv-optional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using Virtualenv (Optional)</h2>
 <p>virtualenv is a tool to create isolated Python environments. virtualenv creates a folder which contains all the necessary executables to use the packages that a Python project would need. This helps with setting all necessary python requirements and dependencies for your Django app.</p>
